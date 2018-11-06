@@ -2,8 +2,9 @@
 title: "hw06"
 author: "ziqiangt"
 date: "2018/11/05"
-output: 
-  github_document:
+output:
+  html_document:
+    keep_md: true
     toc: yes
 ---
 ## Introduction
@@ -144,3 +145,38 @@ vector_to_string(c("a", "b","c"))
 ```
 
 ### 14.3.1.1 Exercises
+#### Q1
+Explain why each of these strings don’t match a \: "\", "\\", "\\\"?
+
+symbol | Definition
+----------------|------------------
+   `\`      |  used as an escape character in regular expressions
+   `\\`     | trated as a symbol "\"
+   `\\\`    | a back slash + an escape character
+   
+Here is an example:
+```{r}
+test <- "I\\AM"
+
+str_view(test, pattern = "\\\\", match = TRUE)
+```
+
+####Q2
+How would you match the sequence "'\?
+Answer: Both ' and \ need to be escaped in regex.
+```{r}
+test <- "I'\\AM"
+
+str_view(test, pattern = "\\'\\\\", match = TRUE)
+```
+
+####Q3
+What patterns will the regular expression \..\..\.. match? How would you represent it as a string?
+Answer: It match ".anycharacter.anycharacter.anycharacter"
+```{r}
+test <- "I.A.M.z...xxx"
+
+str_view(test, pattern = "\\..\\..\\..", match = TRUE)
+```
+
+### 14.3.2.1 Exercises
