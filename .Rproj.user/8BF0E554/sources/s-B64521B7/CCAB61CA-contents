@@ -147,11 +147,13 @@ vector_to_string(c("a", "b","c"))
 ### 14.3.1.1 Exercises
 #### Q1
 Explain why each of these strings don’t match a \: "\", "\\", "\\\"?
+
 symbol | Definition
 ----------------|------------------
-   "\"      |  used as an escape character in regular expressions
-   "\\"         | trated as a symbol "\"
-   "\\\"    | a back slash + an escape character
+   `\`      |  used as an escape character in regular expressions
+   `\\`     | trated as a symbol "\"
+   `\\\`    | a back slash + an escape character
+   
 Here is an example:
 ```{r}
 test <- "I\\AM"
@@ -177,4 +179,4 @@ test <- "I.A.M.z...xxx"
 str_view(test, pattern = "\\..\\..\\..", match = TRUE)
 ```
 
-### Exercises 14.3.2.1
+### 14.3.2.1 Exercises
