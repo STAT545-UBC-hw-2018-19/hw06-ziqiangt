@@ -1,0 +1,2 @@
+"0","test <- ""I.A.M.z...xxx"""
+"0","str_view(test, pattern = ""\\..\\..\\.."", match = TRUE)"

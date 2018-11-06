@@ -1,0 +1,180 @@
+---
+title: "hw06"
+author: "ziqiangt"
+date: "2018/11/05"
+output:
+  html_document:
+    keep_md: true
+    toc: yes
+---
+## Introduction
+This is the first assignment of STAT 547M (despite it being named Homework 06).
+
+First, let's load the used data
+```{r}
+suppressPackageStartupMessages(library(gapminder))
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(stringr))
+suppressPackageStartupMessages(library(testthat))
+suppressPackageStartupMessages(library(stringi))
+```
+
+
+## 1.Character data
+### 14.2.5 Exercises
+####Q1
+In code that doesn’t use stringr, you’ll often see paste() and paste0(). What’s the difference between the two functions? 
+Answer: paste() allows us to add an separator between strings while paste0() dose not. Here is an example:
+```{r}
+paste("Task", "1", sep = "-")
+paste0("Task", "1")
+```
+
+What stringr function are they equivalent to? How do the functions differ in their handling of NA?
+Answer: paste() and paste0() equivalent to str_c(). Here is an example:
+```{r}
+str_c("Task", "1", sep = "-") 
+str_c("Task", "1", sep = "")
+```
+
+How do the functions differ in their handling of NA?
+Answer: NA is converted to a string "NA" in paste() and paste0(). However, if NA is one of the input strings for str_c(), the output of str_c() will be NA. Here is an example:
+```{r}
+paste("Look ", NA, sep = "")
+paste0("Look ", NA)
+str_c("Look ", NA)
+```
+
+####Q2
+In your own words, describe the difference between the sep and collapse arguments to str_c().
+Answer:"sep" is used to seperate a vector of strings and keep the vector format. While "collapse" to a vector of strings into a single string. Here is an example:
+```{r}
+str_c(c("x", "y", "z"), c("a", "b", "c"), sep = ": ")
+str_c(c("x", "y", "z"), c("a", "b", "c"), collapse = ":")
+```
+
+####Q3
+Use str_length() and str_sub() to extract the middle character from a string. What will you do if the string has an even number of characters?
+Answer:First, we need to use str_length to obtain the middle index. Then use str_sub to output the middle character. Here is the example:
+```{r}
+odd_string <- "eye"
+
+# A function to find the middle index
+find_middle <- function(input) {
+  return(str_length(input) / 2 + 1)
+}
+
+# Obtain the middle index and output the midelle character
+odd_index <- find_middle(odd_string) 
+str_sub(odd_string, odd_index, odd_index)
+```
+
+What will you do if the string has an even number of characters?
+Answer: We need to modify the str_sub. Because there are two middle characters now. Here is an modified example:
+```{r}
+even_string <- "eyne"
+
+# A function to find the middle index
+find_middle_even <- function(input) {
+  return(str_length(input) / 2 + 1 )
+}
+
+# Obtain the middle index and output the midelle character
+even_index <- find_middle_even(even_string) 
+str_sub(even_string, even_index-1, even_index)
+```
+
+
+####Q4
+What does str_wrap() do? When might you want to use it?
+Answer: str_wrap() tries to implement the Knuth-Plass paragraph wrapping algorithm. It might be used when we need to sperate a long paragraph into multiple lines. Here is an example:
+```{r}
+# a long sentence 
+paragraph <- "One or more elements are missing or sketchy. Missed opportunities to complement code and numbers with a figure and interpretation. Technical problem that is relatively easy to fix. It’s hard to find the report in this crazy repo."
+
+# view without wrap
+cat(paragraph)
+
+# view with wrap
+cat(str_wrap(paragraph), sep = "\n")
+```
+
+####Q5
+What does str_trim() do? 
+Answer: str_trim() removes whitespace from start and end of string. 
+```{r}
+# before removing whitespace from start and end of string
+spaces_string = "  I am  "
+spaces_string
+
+# After using str_trim() 
+no_spaces_string <- str_trim(spaces_string)
+no_spaces_string
+```
+
+What’s the opposite of str_trim()?
+Answer: The opposite is str_pad() which is used to add whitespace. Here is an example to combine neighborhood character of letters.
+```{r}
+letters %>%
+  .[1:10] %>% 
+  str_pad(width = 2, side = "right") %>%
+  str_c(letters[2:11])
+```
+
+Write a function that turns (e.g.) a vector c("a", "b", "c") into the string a, b, and c. Think carefully about what it should do if given a vector of length 0, 1, or 2.
+```{r}
+vector_to_string <- function(v) {
+  if (length(v) == 0){
+    return("")
+  }
+  else if (length(v) == 1){
+    return(v)
+  }
+  else{
+    front <- str_c(v[-length(v)], collapse = ", ")
+    whole <- str_c(front, v[length(v)], sep = " and ")
+    return(whole)
+  }
+}
+
+#begin to test
+vector_to_string(c(""))
+vector_to_string(c("a"))
+vector_to_string(c("a", "b"))
+vector_to_string(c("a", "b","c"))
+```
+
+### 14.3.1.1 Exercises
+#### Q1
+Explain why each of these strings don’t match a \: "\", "\\", "\\\"?
+symbol | Definition
+----------------|------------------
+   "\"      |  used as an escape character in regular expressions
+   "\\"         | trated as a symbol "\"
+   "\\\"    | a back slash + an escape character
+Here is an example:
+```{r}
+test <- "I\\AM"
+
+str_view(test, pattern = "\\\\", match = TRUE)
+```
+
+####Q2
+How would you match the sequence "'\?
+Answer: Both ' and \ need to be escaped in regex.
+```{r}
+test <- "I'\\AM"
+
+str_view(test, pattern = "\\'\\\\", match = TRUE)
+```
+
+####Q3
+What patterns will the regular expression \..\..\.. match? How would you represent it as a string?
+Answer: It match ".anycharacter.anycharacter.anycharacter"
+```{r}
+test <- "I.A.M.z...xxx"
+
+str_view(test, pattern = "\\..\\..\\..", match = TRUE)
+```
+
+### Exercises 14.3.2.1

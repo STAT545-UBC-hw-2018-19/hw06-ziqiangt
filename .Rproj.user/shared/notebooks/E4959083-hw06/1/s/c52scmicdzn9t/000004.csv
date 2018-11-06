@@ -1,0 +1,12 @@
+"0","# a long sentence "
+"0","paragraph <- ""One or more elements are missing or sketchy. Missed opportunities to complement code and numbers with a figure and interpretation. Technical problem that is relatively easy to fix. It’s hard to find the report in this crazy repo."""
+"0","# view without wrap"
+"0","cat(paragraph)"
+"1","One or more elements are missing or sketchy. Missed opportunities to complement code and numbers with a figure and interpretation. Technical problem that is relatively easy to fix. It’s hard to find the report in this crazy repo."
+"0","# view with wrap"
+"0","cat(str_wrap(paragraph), sep = ""\n"")"
+"1","One or more elements are missing or sketchy. Missed opportunities to complement
+code and numbers with a figure and interpretation. Technical problem that is
+relatively easy to fix. It’s hard to find the report in this crazy repo."
+"1","
+"

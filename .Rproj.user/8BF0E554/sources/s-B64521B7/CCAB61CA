@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541449866432.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2252437099",
+    "id" : "CCAB61CA",
+    "lastKnownWriteTime" : 1541490461,
+    "last_content_update" : 1541490461258,
+    "path" : "~/Desktop/STAT545/hw06-ziqiangt/hw06.Rmd",
+    "project_path" : "hw06.Rmd",
+    "properties" : {
+        "cursorPosition" : "179,3",
+        "scrollLine" : "171",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
