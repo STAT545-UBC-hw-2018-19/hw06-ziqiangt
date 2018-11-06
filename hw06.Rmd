@@ -203,13 +203,91 @@ str_view(stringr::words, pattern = "x$", match = TRUE)
 
 Are exactly three letters long. (Don’t cheat by using str_length()!)
 ```{r}
-str_view(stringr::words, pattern = "^.{3}$", match = TRUE)
+#There are too many matched words
+#let's narrow down the search range to the head 20 words
+str_view(stringr::words[1:20], pattern = "^.{3}$", match = TRUE)
 ```
 
 Have seven letters or more.
 ```{r}
-str_view(stringr::words, pattern = "^.{7,}$", match = TRUE)
+#There are too many matched words
+#let's narrow down the search range to the head 20 words
+str_view(stringr::words[1:20], pattern = "^.{7,}$", match = TRUE)
 ```
 
 ###Exercises 14.3.3.1
+####Q1
+Create regular expressions to find all words that:
 
+Start with a vowel.
+```{r}
+str_view(stringr::words, pattern = "^[aeiou]|[AEIOU]", match = TRUE)
+```
+
+That only contain consonants.
+```{r}
+str_view(stringr::words, pattern = "^[^aeiou]{1,}$", match = TRUE)
+```
+
+End with ed, but not with eed.
+```{r}
+str_view(stringr::words, pattern = "[^e]e{1}d$", match = TRUE)
+```
+
+End with ing or ise.
+```{r}
+str_view(stringr::words, pattern = "ing|ise$", match = TRUE)
+```
+
+####Q2
+Empirically verify the rule “i before e except after c”.
+```{r}
+# Rule “i before e except after c
+high_subset <- str_subset(stringr::words, pattern = "[^c]ie|cei")
+high_subset %>% knitr::kable()
+
+# The one which obey the rule
+low_subset <- str_subset(stringr::words, pattern = "cie|[^c]ei")
+low_subset %>% knitr::kable()
+
+# Test
+if(length(high_subset) > length(low_subset))
+  "Rule is correct"
+```
+
+s “q” always followed by a “u”?
+```{r}
+#Find the words q is not followed by u
+q_followed_u <- str_subset(stringr::words, pattern = "q[^u]")
+
+#Test
+test_that("“q” always followed by a “u”", {
+  expect_more_than(1, length(q_followed_u))
+})
+```
+
+Answer: Test passed
+
+####Q4
+Write a regular expression that matches a word if it’s probably written in British English, not American English.
+Answer: According to [oxfordinternationalenglish](https://www.oxfordinternationalenglish.com/differences-in-british-and-american-spelling/),British English words ending in ‘our’ usually end in ‘or’ in American English. Here is an example:
+```{r}
+# Test vectors
+test_words <- c("colour", "flavor", "humour", "labor", "neighbour")
+
+# View results
+str_view(test_words, pattern = "our", match = TRUE)
+```
+
+####Q5
+Create a regular expression that will match telephone numbers as commonly written in your country.
+Answer: In my country, China, the telephone number starts with +86 and have 11 digits (except +86) in total. 
+```{r}
+# Test vectors
+test_words <- c("+8613777705661", "+16044888876", "+1605888876", "+861377770566")
+
+# View results
+str_view(test_words, pattern = "^\\+86[0-9]{11}", match = TRUE)
+```
+
+###Exercises 14.3.4.1
