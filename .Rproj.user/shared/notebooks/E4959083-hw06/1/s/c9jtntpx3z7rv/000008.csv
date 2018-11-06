@@ -1,0 +1,2 @@
+"0","test <- ""$^$, $$sssa"""
+"0","str_view(test, pattern = ""\\$\\^\\$"", match = TRUE)"
