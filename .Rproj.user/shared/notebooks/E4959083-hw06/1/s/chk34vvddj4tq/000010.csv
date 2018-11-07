@@ -1,0 +1,6 @@
+"0","#Find the words q is not followed by u"
+"0","q_followed_u <- str_subset(stringr::words, pattern = ""q[^u]"")"
+"0","#Test"
+"0","test_that(""“q” always followed by a “u”"", {"
+"0","  expect_more_than(1, length(q_followed_u))"
+"0","})"

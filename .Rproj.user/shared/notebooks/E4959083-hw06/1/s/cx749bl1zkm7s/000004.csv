@@ -1,0 +1,3 @@
+"0","# The one which obey the rule"
+"0","low_subset <- str_subset(stringr::words, pattern = ""cie|[^c]ei"")"
+"0","low_subset %>% knitr::kable()"

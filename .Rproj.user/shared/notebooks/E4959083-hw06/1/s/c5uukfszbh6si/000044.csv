@@ -1,0 +1,4 @@
+"0","# Test vectors"
+"0","test_words <- c(""+8613777705661"", ""+16044888876"", ""+1605888876"", ""+861377770566"")"
+"0","# View results"
+"0","str_view(test_words, pattern = ""^\\+86[0-9]{11}"", match = TRUE)"

@@ -1,4 +1,0 @@
-"0","head10 <- str_view(stringr::words, pattern = ""x$"", match = TRUE)"
-"0","kable(head( head10, 10 )) # view the first 10 rows"
-"2","Error in kable(head(head10, 10)) : could not find function ""kable""
-"

@@ -203,13 +203,161 @@ str_view(stringr::words, pattern = "x$", match = TRUE)
 
 Are exactly three letters long. (Don’t cheat by using str_length()!)
 ```{r}
-str_view(stringr::words, pattern = "^.{3}$", match = TRUE)
+#There are too many matched words
+#let's narrow down the search range to the head 20 words
+str_view(stringr::words[1:20], pattern = "^.{3}$", match = TRUE)
 ```
 
 Have seven letters or more.
 ```{r}
-str_view(stringr::words, pattern = "^.{7,}$", match = TRUE)
+#There are too many matched words
+#let's narrow down the search range to the head 20 words
+str_view(stringr::words[1:20], pattern = "^.{7,}$", match = TRUE)
 ```
 
 ###Exercises 14.3.3.1
+####Q1
+Create regular expressions to find all words that:
+
+Start with a vowel.
+```{r}
+str_view(stringr::words, pattern = "^[aeiou]|[AEIOU]", match = TRUE)
+```
+
+That only contain consonants.
+```{r}
+str_view(stringr::words, pattern = "^[^aeiou]{1,}$", match = TRUE)
+```
+
+End with ed, but not with eed.
+```{r}
+str_view(stringr::words, pattern = "[^e]e{1}d$", match = TRUE)
+```
+
+End with ing or ise.
+```{r}
+str_view(stringr::words, pattern = "ing|ise$", match = TRUE)
+```
+
+####Q2
+Empirically verify the rule “i before e except after c”.
+```{r}
+# Rule “i before e except after c
+high_subset <- str_subset(stringr::words, pattern = "[^c]ie|cei")
+high_subset %>% knitr::kable()
+
+# The one which obey the rule
+low_subset <- str_subset(stringr::words, pattern = "cie|[^c]ei")
+low_subset %>% knitr::kable()
+
+# Test
+if(length(high_subset) > length(low_subset))
+  "Rule is correct"
+```
+
+s “q” always followed by a “u”?
+```{r}
+#Find the words q is not followed by u
+q_followed_u <- str_subset(stringr::words, pattern = "q[^u]")
+
+#Test
+test_that("“q” always followed by a “u”", {
+  expect_more_than(1, length(q_followed_u))
+})
+```
+
+Answer: Test passed
+
+####Q4
+Write a regular expression that matches a word if it’s probably written in British English, not American English.
+Answer: According to [oxfordinternationalenglish](https://www.oxfordinternationalenglish.com/differences-in-british-and-american-spelling/),British English words ending in ‘our’ usually end in ‘or’ in American English. Here is an example:
+```{r}
+# Test vectors
+test_words <- c("colour", "flavor", "humour", "labor", "neighbour")
+
+# View results
+str_view(test_words, pattern = "our", match = TRUE)
+```
+
+####Q5
+Create a regular expression that will match telephone numbers as commonly written in your country.
+Answer: In my country, China, the telephone number starts with +86 and have 11 digits (except +86) in total. 
+```{r}
+# Test vectors
+test_words <- c("+8613777705661", "+16044888876", "+1605888876", "+861377770566")
+
+# View results
+str_view(test_words, pattern = "^\\+86[0-9]{11}", match = TRUE)
+```
+
+###Exercises 14.3.4.1
+####Q1
+Describe the equivalents of ?, +, * in {m,n} form.
+Answer:
+
+symbol | equivalent
+----------------|------------------
+   `?`      |  {0,1}
+   `+`     |  {1,}
+   `*`    | {0,}
+
+####Q2
+Describe in words what these regular expressions match: (read carefully to see if I’m using a regular expression or a string that defines a regular expression.)
+
+symbol | match
+----------------|------------------
+   `^.*$ `      |  any strings
+   `\\{.+\\}`     | {at least one character} for example: {a}, {abd}
+   `\d{4}-\d{2}-\d{2}`    | matches in the format dddd-dd-dd, where d is digit. For example, "1111-22-33".
+   '\\\\{4}'    | matches four back slashes
+
+####Q3
+Create regular expressions to find all words that:
+Start with three consonants.
+```{r}
+str_view(stringr::words, pattern = "^[^aeoiu]{3,}", match = TRUE)
+```
+
+Have three or more vowels in a row.
+```{r}
+str_view(stringr::words, pattern = "[aeoiu]{3,}", match = TRUE)
+```
+
+Have two or more vowel-consonant pairs in a row.
+```{r}
+str_view(stringr::words, pattern = "([aeoiu][^aeoiu]){3,}", match = TRUE)
+```
+
+####Q4
+Solve the beginner regexp crosswords at [this link](https://regexcrossword.com/challenges/beginner).
+![](results.png)
+
+###Exercises 14.3.5.1
+####Q1
+Describe, in words, what these expressions will match:
+
+symbol | match
+----------------|------------------
+   (.)\1\1      |  match a character followed with \1\1. e.g. "x\1\1"
+   "(.)(.)\\2\\1"     | match the two characters followed with and reversal. e.g. "xyyx" 
+   `(..)\1`    | match a pair of characters followed with \1. e.g. "ab\1\1"
+   "(.).\\1.\\1"    | match in the format "x anycharacter x anycharacter x". e.g. "abaxa"
+   "(.)(.)(.).*\\3\\2\\1" | match three characters appears at the beginning, then follows by any characters (0 or more), then the reversal of the begining three characters. For example, "abcxxcba".
+
+####Q2
+Construct regular expressions to match words that:
+Start and end with the same character.
+```{r}
+str_view(stringr::words, pattern = "^(.).*\\1$", match = TRUE)
+```
+
+Contain a repeated pair of letters (e.g. “church” contains “ch” repeated twice.)
+```{r}
+str_view(stringr::words, pattern = "(..).*\\1", match = TRUE)
+```
+
+Contain one letter repeated in at least three places (e.g. “eleven” contains three “e”s.)
+```{r}
+str_view(stringr::words, pattern = "(.).*\\1.*\\1", match = TRUE)
+```
 

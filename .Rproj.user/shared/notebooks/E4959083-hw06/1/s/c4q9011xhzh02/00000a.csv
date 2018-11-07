@@ -1,0 +1,1 @@
+"0","str_view(stringr::words, pattern = ""[^e]e{1}d$"", match = TRUE)"

@@ -1,0 +1,4 @@
+"0","# Test vectors"
+"0","test_words <- c(""colour"", ""flavor"", ""humour"", ""labor"", ""neighbour"")"
+"0","# View results"
+"0","str_view(test_words, pattern = ""our"", match = TRUE)"

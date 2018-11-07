@@ -1,0 +1,3 @@
+"0","# Rule “i before e except after c"
+"0","high_subset <- str_subset(stringr::words, pattern = ""[^c]ie|cei"")"
+"0","high_subset %>% knitr::kable()"
