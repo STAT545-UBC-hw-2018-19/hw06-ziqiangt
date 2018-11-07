@@ -157,7 +157,6 @@ symbol | Definition
 Here is an example:
 ```{r}
 test <- "I\\AM"
-
 str_view(test, pattern = "\\\\", match = TRUE)
 ```
 
@@ -165,9 +164,9 @@ str_view(test, pattern = "\\\\", match = TRUE)
 How would you match the sequence "'\?
 Answer: Both ' and \ need to be escaped in regex.
 ```{r}
-test <- "I'\\AM"
-
-str_view(test, pattern = "\\'\\\\", match = TRUE)
+test <- "\"'\\AM"
+test
+str_view(test, pattern = "\"\\'\\\\", match = TRUE)
 ```
 
 ####Q3
@@ -360,4 +359,92 @@ Contain one letter repeated in at least three places (e.g. “eleven” contains
 ```{r}
 str_view(stringr::words, pattern = "(.).*\\1.*\\1", match = TRUE)
 ```
+
+### Exercises 14.4.2
+#### Q1
+For each of the following challenges, try solving it by using both a single regular expression, and a combination of multiple str_detect() calls.
+
+Find all words that start or end with x.
+```{r}
+# single regular expression
+str_subset(stringr::words, pattern = "^x|x$") %>% 
+  knitr::kable(col.names = c("Single Regular Expression"))
+
+# multiple str_detect()
+m1 <- str_detect(stringr::words, pattern = "^x")
+m2 <- str_detect(stringr::words, pattern = "x$")
+
+## show table
+stringr::words %>% 
+  `[`(m1 | m2) %>% 
+  knitr::kable(col.names = c("Multiple str_detect()"))
+```
+
+Find all words that start with a vowel and end with a consonant.
+```{r}
+# single regular expression, here we just search first 10 rows
+str_subset(stringr::words[1:10], pattern = "^[aeiou].*[^aeiou]$") %>% 
+  knitr::kable(col.names = c("Single Regular Expression"))
+
+# multiple str_detect(), here we just search first 10 rows
+m1 <- str_detect(stringr::words[1:10], pattern = "^[aeiou].*")
+m2 <- str_detect(stringr::words[1:10], pattern = "[^aeiou]$")
+
+## show table
+stringr::words[1:10] %>% 
+  `[`(m1 & m2) %>% 
+  knitr::kable(col.names = c("Multiple str_detect()"))
+```
+
+Are there any words that contain at least one of each different vowel?
+Answer: In orer to use single regular expression, we need to wirte 5*4*3*2*1=120 conditions. For example, we need to match "abc"" disorderly. There are 6 conditions: abc, acd, bac, bca, cab, cba. It is therefore seems impossible to use a single regular expression to finish this question.
+However, we could use "?=" which is a positive lookahead, a type of zero-width assertion to solve this problem.
+```{r}
+test_words <- c("eioua", "aaaaa", "abcde", "aeeiuuo", "eeeiuuuuo")
+
+# single regular expression
+str_subset(test_words, pattern = "(?=.*a.*)(?=.*e.*)(?=.*i.*)(?=.*o.*)(?=.*u.*)") %>% 
+  knitr::kable(col.names = c("Single Regular Expression"))
+
+# multiple str_detect()
+m1 <- str_detect(test_words, pattern = "(?=.*a.*)")
+m2 <- str_detect(test_words, pattern = "(?=.*e.*)")
+m3 <- str_detect(test_words, pattern = "(?=.*i.*)")
+m4 <- str_detect(test_words, pattern = "(?=.*o.*)")
+m5 <- str_detect(test_words, pattern = "(?=.*u.*)")
+
+## show table
+test_words %>% 
+  `[`(m1 & m2 & m3 & m4 & m5) %>% 
+  knitr::kable(col.names = c("Multiple str_detect()"))
+```
+
+####Q2
+What word has the highest number of vowels?
+```{r}
+# The highest number of vowels
+max(str_count(stringr::words, "[aeiou]")) %>% 
+  knitr::kable(col.names = c("Highest Number of Vowelss"))
+
+# find the words with the highest number of vowels
+num_vowels <- str_count(stringr::words, "[aeiou]")
+
+stringr::words %>% 
+  `[`(num_vowels == max(num_vowels)) %>% 
+  knitr::kable(col.names = c("Detected Words"))
+```
+
+What word has the highest proportion of vowels? (Hint: what is the denominator?)
+```{r}
+#  find highest proportion of vowels
+portion_vowels <- str_count(stringr::words, "[aeiou]")/str_length(stringr::words)
+
+stringr::words %>% 
+  `[`(portion_vowels == max(portion_vowels)) %>% 
+  knitr::kable(col.names = c("Detected Words"))
+```
+
+### Exercises 14.4.3.1
+
+
 

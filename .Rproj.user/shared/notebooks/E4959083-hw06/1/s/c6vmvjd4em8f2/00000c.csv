@@ -1,0 +1,7 @@
+"0","# multiple str_detect()"
+"0","c1 <- str_detect(stringr::words, pattern = ""^x"")"
+"0","c2 <- str_detect(stringr::words, pattern = ""x$"")"
+"0","## show table"
+"0","stringr::words %>% "
+"0","  `[`(c1 | c2) %>% "
+"0","  knitr::kable(col.names = c(""Detected Words""))"

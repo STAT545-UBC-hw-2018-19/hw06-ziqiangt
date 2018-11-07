@@ -1,0 +1,4 @@
+"0","test_words <- c(""eioua"", ""aaaaa"", ""abcde"", ""aeeiuuo"", ""eeeiuuuuo"")"
+"0","# single regular expression"
+"0","str_subset(test_words, pattern = ""(?=.*a.*)(?=.*e.*)(?=.*i.*)(?=.*o.*)(?=.*u.*)"") %>% "
+"0","  knitr::kable(col.names = c(""Single Regular Expression""))"

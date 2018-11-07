@@ -1,0 +1,5 @@
+"0","#  find highest proportion of vowels"
+"0","portion_vowels <- str_count(stringr::words, ""[aeiou]"")/str_length(stringr::words)"
+"0","stringr::words %>% "
+"0","  `[`(portion_vowels == max(portion_vowels)) %>% "
+"0","  knitr::kable(col.names = c(""Detected Words""))"
