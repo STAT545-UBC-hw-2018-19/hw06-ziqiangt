@@ -2,8 +2,10 @@
 title: "hw06"
 author: "ziqiangt"
 date: "2018/11/05"
-output: github_document
-always_allow_html: yes
+output:
+  html_document:
+    keep_md: true
+    toc: true
 ---
 ## Introduction
 This is the first assignment of STAT 547M (despite it being named Homework 06).
@@ -213,8 +215,8 @@ Have seven letters or more.
 str_view(stringr::words[1:20], pattern = "^.{7,}$", match = TRUE)
 ```
 
-###Exercises 14.3.3.1
-####Q1
+### 14.3.3.1 Exercises
+#### Q1
 Create regular expressions to find all words that:
 
 Start with a vowel.
@@ -237,7 +239,7 @@ End with ing or ise.
 str_view(stringr::words, pattern = "ing|ise$", match = TRUE)
 ```
 
-####Q2
+#### Q2
 Empirically verify the rule “i before e except after c”.
 ```{r}
 # Rule “i before e except after c
@@ -266,7 +268,7 @@ test_that("“q” always followed by a “u”", {
 
 Answer: Test passed
 
-####Q4
+#### Q3
 Write a regular expression that matches a word if it’s probably written in British English, not American English.
 Answer: According to [oxfordinternationalenglish](https://www.oxfordinternationalenglish.com/differences-in-british-and-american-spelling/),British English words ending in ‘our’ usually end in ‘or’ in American English. Here is an example:
 ```{r}
@@ -277,7 +279,7 @@ test_words <- c("colour", "flavor", "humour", "labor", "neighbour")
 str_view(test_words, pattern = "our", match = TRUE)
 ```
 
-####Q5
+#### Q4
 Create a regular expression that will match telephone numbers as commonly written in your country.
 Answer: In my country, China, the telephone number starts with +86 and have 11 digits (except +86) in total. 
 ```{r}
@@ -288,8 +290,8 @@ test_words <- c("+8613777705661", "+16044888876", "+1605888876", "+861377770566"
 str_view(test_words, pattern = "^\\+86[0-9]{11}", match = TRUE)
 ```
 
-###Exercises 14.3.4.1
-####Q1
+### 14.3.4.1 Exercises
+#### Q1
 Describe the equivalents of ?, +, * in {m,n} form.
 Answer:
 
@@ -299,7 +301,7 @@ symbol | equivalent
    `+`     |  {1,}
    `*`    | {0,}
 
-####Q2
+#### Q2
 Describe in words what these regular expressions match: (read carefully to see if I’m using a regular expression or a string that defines a regular expression.)
 
 symbol | match
@@ -309,7 +311,7 @@ symbol | match
    `\d{4}-\d{2}-\d{2}`    | matches in the format dddd-dd-dd, where d is digit. For example, "1111-22-33".
    '\\\\{4}'    | matches four back slashes
 
-####Q3
+#### Q3
 Create regular expressions to find all words that:
 Start with three consonants.
 ```{r}
@@ -326,12 +328,12 @@ Have two or more vowel-consonant pairs in a row.
 str_view(stringr::words, pattern = "([aeoiu][^aeoiu]){3,}", match = TRUE)
 ```
 
-####Q4
+#### Q4
 Solve the beginner regexp crosswords at [this link](https://regexcrossword.com/challenges/beginner).
 ![](results.png)
 
-###Exercises 14.3.5.1
-####Q1
+### 14.3.5.1 Exercises
+#### Q1
 Describe, in words, what these expressions will match:
 
 symbol | match
@@ -342,7 +344,7 @@ symbol | match
    "(.).\\1.\\1"    | match in the format "x anycharacter x anycharacter x". e.g. "abaxa"
    "(.)(.)(.).*\\3\\2\\1" | match three characters appears at the beginning, then follows by any characters (0 or more), then the reversal of the begining three characters. For example, "abcxxcba".
 
-####Q2
+#### Q2
 Construct regular expressions to match words that:
 Start and end with the same character.
 ```{r}
@@ -359,7 +361,7 @@ Contain one letter repeated in at least three places (e.g. “eleven” contains
 str_view(stringr::words, pattern = "(.).*\\1.*\\1", match = TRUE)
 ```
 
-### Exercises 14.4.2
+### 14.4.2 Exercises
 #### Q1
 For each of the following challenges, try solving it by using both a single regular expression, and a combination of multiple str_detect() calls.
 
@@ -418,7 +420,7 @@ test_words %>%
   knitr::kable(col.names = c("Multiple str_detect()"))
 ```
 
-####Q2
+#### Q2
 What word has the highest number of vowels?
 ```{r}
 # The highest number of vowels
@@ -443,7 +445,7 @@ stringr::words %>%
   knitr::kable(col.names = c("Detected Words"))
 ```
 
-### Exercises 14.4.3.1
+### 14.4.3.1 Exercises
 #### Q1
 In the previous example, you might have noticed that the regular expression matched “flickered”, which is not a colour. Modify the regex to fix the problem.
 ```{r}
@@ -486,8 +488,8 @@ str_view(sentences[1:10], pattern = "\\b[A-Za-z]{3,}e{0,1}s{1}\\b", match = TRUE
 ```
 
 
-###Exercises 14.4.4.1
-####Q1
+### 14.4.4.1 Exercises
+#### Q1
 Find all words that come after a “number” like “one”, “two”, “three” etc. Pull out both the number and the word.
 ```{r}
 # we assume we just have 0-10 number
@@ -503,7 +505,7 @@ pattern <- str_c(" (", pattern, ") ([a-zA-Z])+ ")
 str_view(sentences[1:100], pattern = pattern, match = TRUE)
 ```
 
-####Q2
+#### Q2
 Find all contractions. Separate out the pieces before and after the apostrophe.
 ```{r}
 # Find the sentences meeting the requirement
@@ -558,7 +560,7 @@ intersect(stringr::words, switch) %>%
   knitr::kable(col.names = "Still Words")
 ```
 
-### Exercises 14.4.6.1
+### 14.4.6.1 Exercises
 #### Q1
 Split up a string like "apples, pears, and bananas" into individual components.
 ```{r}
@@ -618,7 +620,7 @@ tibble(words = word_list) %>%
   knitr::kable(col.names = c("Top 5 Words", "Count"))
 ```
 
-### Exercises 14.7.1
+### 14.7.1 Exercises
 #### Q1
 Find the stringi functions that fullfill the following requirements.
 Count the number of words.
