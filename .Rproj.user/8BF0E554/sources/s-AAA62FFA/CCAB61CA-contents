@@ -595,7 +595,7 @@ str_split(test_string, "")[[1]] %>%
    knitr::kable(col.names = c("Individual Components"))
 ```
 
-### Exercises 14.5.1
+### 14.5.1 Exercises
 #### Q1
 How would you find all strings containing \ with regex() vs. with fixed()?
 
