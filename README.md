@@ -3,7 +3,9 @@ hw06-ziqiangt created by GitHub Classroom
 # Hi, here is the STAT547 hw06 of ziqiang
 
 ## Overview
-This file helps to navigate the directory for new vistors. You can click **[STAT545A](http://stat545.com/)** to view more details about this cource.
+This file helps to navigate the directory for new vistors. You can click **[STAT547M](http://stat545.com/)** to view more details about this cource.
+
+### It would be much better to take a look at the html file
 
 #### Here is the directory of my homework
 
