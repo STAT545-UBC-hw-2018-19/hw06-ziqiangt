@@ -1,0 +1,2 @@
+"0","# Just match the first 10 rows"
+"0","str_view(sentences[1:10], pattern = ""\\b[A-Za-z]{3,}e{0,1}s{1}\\b"", match = TRUE)"

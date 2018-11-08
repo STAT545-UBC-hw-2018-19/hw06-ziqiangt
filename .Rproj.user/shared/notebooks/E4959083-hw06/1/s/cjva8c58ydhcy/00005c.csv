@@ -1,0 +1,7 @@
+"0","# we assume we just have 0-10 number"
+"0","numbers = c(""zero"",""one"",""two"",""three"",""four"",""five"",""six"",""seven"",""eight"",""nine"","
+"0","         ""ten"")"
+"0","# collapse all nums using ""|"""""
+"0","pattern <- str_c(numbers, collapse = ""|"")"
+"0","pattern <- str_c("" ("", pattern, "") ([a-zA-Z])+ "")"
+"0","str_view(sentences[1:100], pattern = pattern, match = TRUE)"

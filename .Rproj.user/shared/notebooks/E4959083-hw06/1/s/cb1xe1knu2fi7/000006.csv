@@ -1,0 +1,4 @@
+"0","test_string <- c(""apples, pears, and bananas"")"
+"0","# use str_split() with boundary(word)"
+"0","str_split(test_string, boundary(""word""))[[1]] %>% "
+"0","  knitr::kable(col.names = c(""Individual Components""))"

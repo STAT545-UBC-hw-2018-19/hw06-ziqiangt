@@ -1,0 +1,1 @@
+"0","str_view(sentences, pattern = ""[A-Za-z]+ing\\b"", match = TRUE)"

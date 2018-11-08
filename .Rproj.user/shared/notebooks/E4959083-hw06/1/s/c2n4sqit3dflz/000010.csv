@@ -1,0 +1,7 @@
+"0","switch <- str_replace(stringr::words, "
+"0","                      pattern = ""([a-zA-Z])([a-zA-Z]*)([a-zA-Z]$)"", "
+"0","                      replacement = ""\\3\\2\\1"")"
+"0","# show some of the words"
+"0","switch %>% "
+"0","  head(10) %>% "
+"0","  knitr::kable(col.names = ""Switch results"")"

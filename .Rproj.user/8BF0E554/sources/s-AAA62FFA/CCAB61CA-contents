@@ -445,6 +445,134 @@ stringr::words %>%
 ```
 
 ### Exercises 14.4.3.1
+#### Q1
+In the previous example, you might have noticed that the regular expression matched “flickered”, which is not a colour. Modify the regex to fix the problem.
+```{r}
+# Example in book
+colours <- c("red", "orange", "yellow", "green", "blue", "purple")
+colour_match <- str_c(colours, collapse = "|")
+colour_match
+
+more <- sentences[str_count(sentences, colour_match) > 1]
+str_view_all(more, colour_match)
+```
+
+It can been seen that flickered is also be matched. Thus, we need to define the word boundary. Here is the modifed one:
+```{r}
+boundary_colour_match <- str_c("\\b", colour_match, "\\b")
+
+modified <- sentences[str_count(sentences, boundary_colour_match) > 1]
+str_view_all(modified, colour_match)
+```
+
+#### Q2
+From the Harvard sentences data, extract:
+The first word from each sentence.
+```{r}
+first_words <- str_extract(sentences[1:10], pattern = "[a-zA-Z']+")  
+  
+tibble(sentences[1:10], first_words) %>% 
+  knitr::kable(col.names = c("Selected Sentences", "First Word"))
+```
+
+All words ending in ing.
+```{r}
+str_view(sentences, pattern = "[A-Za-z]+ing\\b", match = TRUE)
+```
+
+All plurals.
+```{r}
+# Just match the first 10 rows
+str_view(sentences[1:10], pattern = "\\b[A-Za-z]{3,}e{0,1}s{1}\\b", match = TRUE)
+```
 
 
+###Exercises 14.4.4.1
+####Q1
+Find all words that come after a “number” like “one”, “two”, “three” etc. Pull out both the number and the word.
+```{r}
+# we assume we just have 0-10 number
+numbers = c("zero","one","two","three","four","five","six","seven","eight","nine",
+         "ten")
+
+# collapse all nums using "|""
+pattern <- str_c(numbers, collapse = "|")
+
+# redesign the pattern to find the after word
+pattern <- str_c(" (", pattern, ") ([a-zA-Z])+ ")
+
+str_view(sentences[1:100], pattern = pattern, match = TRUE)
+```
+
+####Q2
+Find all contractions. Separate out the pieces before and after the apostrophe.
+```{r}
+# Find the sentences meeting the requirement
+pattern <- str_c("([a-zA-Z])+", "'", "([a-zA-Z])+")
+filter_sentences <- sentences[str_detect(sentences, pattern = pattern)]
+
+# Keep the  the pieces before and after the apostrophe part and remove '
+contractions <- str_extract_all(filter_sentences, pattern = pattern, simplify = TRUE)
+pieces <- str_split(contractions, pattern = "'", simplify = TRUE)
+
+# show results as a table
+data.frame(filter_sentences, pieces) %>% 
+ knitr::kable(col.names = c("Sentences with Contractions", "Before Apostrophe", "After Apostrophe"))
+```
+
+### 14.4.5.1 Exercises
+#### Q1
+Replace all forward slashes in a string with backslashes.
+```{r}
+test_strings <- c("I/AM", "It/OK") %>% 
+  str_replace("/", "\\\\")
+test_strings
+```
+
+#### Q2
+Implement a simple version of str_to_lower() using replace_all().
+```{r}
+test_strings <- c("I/AM", "It/OK") %>% 
+  str_replace_all( c("A"="a", "B"="b", "C"="c", "D"="d", "E"="e", "F"="f", "G"="g", "H"="h", "I"="i", "J"="j", "K"="k", "L"="l", "M"="m", "N"="n", "O"="o", "P"="p", "Q"="q", "R"="r", "S"="s", "T"="t", "U"="u", "V"="v", "W"="w", "X"="x", "Y"="y", "Z"="z"))
+
+test_strings
+```
+
+#### Q3
+Switch the first and last letters in words.
+```{r}
+switch <- str_replace(stringr::words, 
+                      pattern = "([a-zA-Z])([a-zA-Z]*)([a-zA-Z]$)", 
+                      replacement = "\\3\\2\\1")
+
+# show some of the words
+switch %>% 
+  head(10) %>% 
+  knitr::kable(col.names = "Switch results")
+```
+
+Which of those strings are still words?
+Answer: We can use "intersect" to find two sets that they have in common.
+```{r}
+intersect(stringr::words, switch) %>% 
+  head(10) %>% 
+  knitr::kable(col.names = "Still Words")
+```
+
+### Exercises 14.4.6.1
+#### Q1
+Split up a string like "apples, pears, and bananas" into individual components.
+```{r}
+test_string <- c("apples, pears, and bananas")
+
+# use str_split() with boundary(word)
+str_split(test_string, boundary("word"))[[1]] %>% 
+  knitr::kable(col.names = c("Individual Components"))
+```
+
+#### Q2
+Why is it better to split up by boundary("word") than " "?
+```{r}
+
+```
 
