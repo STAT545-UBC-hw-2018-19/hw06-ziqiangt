@@ -1,0 +1,4 @@
+"0","duplicated_vector <- c(""diff"", ""same"", ""same"")"
+"0","# using stri_duplicated"
+"0","stri_duplicated(duplicated_vector) %>% "
+"0","  knitr::kable(col.names = c(""stri_duplicated""))"

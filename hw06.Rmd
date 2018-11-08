@@ -2,10 +2,8 @@
 title: "hw06"
 author: "ziqiangt"
 date: "2018/11/05"
-output:
-  html_document:
-    keep_md: true
-    toc: yes
+output: github_document
+always_allow_html: yes
 ---
 ## Introduction
 This is the first assignment of STAT 547M (despite it being named Homework 06).
@@ -17,6 +15,7 @@ suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(stringr))
 suppressPackageStartupMessages(library(testthat))
 suppressPackageStartupMessages(library(stringi))
+suppressPackageStartupMessages(library(ggplot2))
 ```
 
 
@@ -572,7 +571,161 @@ str_split(test_string, boundary("word"))[[1]] %>%
 
 #### Q2
 Why is it better to split up by boundary("word") than " "?
+Answer: Since use " " will bring other symbol rather a pure word. Here is an example.
 ```{r}
+# create string to test
+test_string <- c("apples, pears, and bananas")
 
+# use str_split() with " "
+str_split(test_string, " ")[[1]] %>% 
+   knitr::kable(col.names = c("Individual Components"))
+```
+
+#### Q3
+What does splitting with an empty string ("") do? Experiment, and then read the documentation.
+Answer: It will split every single character. This is same as boundary('character'). Here is an example.
+```{r}
+# create string to test
+test_string <- c("apples, pears, and bananas")
+
+# use str_split() with " "
+str_split(test_string, "")[[1]] %>% 
+   knitr::kable(col.names = c("Individual Components"))
+```
+
+### Exercises 14.5.1
+#### Q1
+How would you find all strings containing \ with regex() vs. with fixed()?
+
+symbol | match
+----------------|------------------
+   \ with regex()     |  \\\\
+   \ with fixed()     | \\
+   
+#### Q2
+What are the five most common words in sentences?
+```{r}
+word_list <- sentences %>% 
+  # split all words from sentences
+  str_split(boundary("word"), simplify = TRUE) %>% 
+  # change to lower case for futhure counting
+  str_to_lower()
+
+# Using tibble to count words and kable them 
+tibble(words = word_list) %>% 
+  count(words, sort = TRUE) %>% 
+  head(6) %>% 
+  knitr::kable(col.names = c("Top 5 Words", "Count"))
+```
+
+### Exercises 14.7.1
+#### Q1
+Find the stringi functions that fullfill the following requirements.
+Count the number of words.
+```{r}
+test_string <- "We have four words"
+stri_count_words(test_string) %>% 
+  knitr::kable(col.names = c("number of words"))
+```
+
+Find duplicated strings.
+
+Function | Describtion
+----------------|------------------
+   stri_duplicated()     |  determines which strings in a character vector are duplicates of other elements.
+   stri_duplicated_any()      | determines if there are any duplicated strings in a character vector.
+
+```{r}
+duplicated_vector <- c("diff", "same", "same")
+
+# using stri_duplicated
+stri_duplicated(duplicated_vector) %>% 
+  knitr::kable(col.names = c("stri_duplicated"))
+
+# using stri_duplicated_any
+stri_duplicated_any(duplicated_vector) %>% 
+  knitr::kable(col.names = c("stri_duplicated_anny"))
+```
+
+Generate random text.
+
+Function | Describtion
+----------------|------------------
+   stri_rand_strings()     |  Generates (pseudo)random strings of desired lengths
+   stri_rand_lipsum()      | Generates (pseudo)random lorem ipsum text consisting of a given number of text paragraphs.
+
+```{r}
+# random stings
+stri_rand_strings(5, sample(5:11, 5, replace=TRUE), '[a-zA-Z0-9]') %>% 
+  knitr::kable(col.names = c("stri_rand_strings"))
+
+# random paragraphs
+cat(stri_rand_lipsum(2), sep="\n\n")
+```
+
+#### Q2
+How do you control the language that stri_sort() uses for sorting?
+Answer: We can use opts_collator to control. Here is an example.
+```{r}
+num_first <- c("America1", "canada", "3")  
+ 
+stri_sort(num_first, numeric = TRUE)
+```
+
+## Writing functions
+### Fitting curve
+Let's try to find the fitting line with linear model of lifeExp in canada. Here is an function which could find the intercept and slope of the fitting curve.
+```{r}
+# Here is the funciton
+le_lin_fit <- function(dat, offset = 1952) {
+  the_fit <- lm(lifeExp ~ I(year - offset), dat)
+  setNames(coef(the_fit), c("intercept", "slope"))
+}
+
+# Try with gapminder
+le_lin_fit(gapminder %>% filter(country == "China"))
+```
+
+```{r}
+# clean evironment
+rm(list = ls())
+
+# filter the 
+Z_data <- gapminder %>% 
+    filter(country == "China")
+
+Z_data %>% 
+    ggplot(aes(x = year, y = lifeExp)) +
+    geom_point() +
+    stat_smooth(method = "lm", formula = y ~ x, size = 1) +
+    ggtitle("Quadratic regression of China's lifeExp over the years")
+```
+
+### Plot function
+Here we build a plot function to perform the plot task in hw03.
+```{r}
+# A funtion to perform the plot task
+make_plot <- function(dat, x, color){
+  plt <- ggplot(dat, aes( x = max_life, y = fct_reorder(country, max_life), color = country ))+
+  geom_point() +
+  ggtitle( "After fct_reorder" ) +
+  xlab( "Max life expantancy") +
+  ylab( "Country" ) +
+  theme_dark()  #change theme
+  
+  return (plt)
+}
+
+# Data that we arrange
+before_arrange <- gapminder %>%
+  filter(continent == "Americas") %>% 
+  group_by(country) %>% 
+  # calcuate maximum lifeExp for each country
+  mutate(max_life = max(lifeExp)) %>%
+  select(country, max_life) %>% 
+  # delete the repeat rows
+  unique()
+
+make_plot(before_arrange, max_life)
 ```
 

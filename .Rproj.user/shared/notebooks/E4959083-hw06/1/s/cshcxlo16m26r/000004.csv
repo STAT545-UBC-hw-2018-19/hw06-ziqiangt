@@ -3,3 +3,4 @@
 "0","suppressPackageStartupMessages(library(stringr))"
 "0","suppressPackageStartupMessages(library(testthat))"
 "0","suppressPackageStartupMessages(library(stringi))"
+"0","suppressPackageStartupMessages(library(ggplot2))"

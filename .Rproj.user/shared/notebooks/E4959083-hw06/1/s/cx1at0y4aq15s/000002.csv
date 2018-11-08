@@ -1,0 +1,3 @@
+"0","test_string <- ""We have four words"""
+"0","stri_count_words(test_string) %>% "
+"0","  knitr::kable(col.names = c(""number of words""))"

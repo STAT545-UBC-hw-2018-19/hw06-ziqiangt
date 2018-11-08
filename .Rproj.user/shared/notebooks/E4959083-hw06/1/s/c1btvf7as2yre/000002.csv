@@ -1,0 +1,5 @@
+"0","# create string to test"
+"0","test_string <- c(""apples, pears, and bananas"")"
+"0","# use str_split() with "" """
+"0","str_split(test_string, """")[[1]] %>% "
+"0","   knitr::kable(col.names = c(""Individual Components""))"
