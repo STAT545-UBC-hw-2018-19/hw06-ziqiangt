@@ -5,7 +5,7 @@ hw06-ziqiangt created by GitHub Classroom
 ## Overview
 This file helps to navigate the directory for new vistors. You can click **[STAT547M](http://stat545.com/)** to view more details about this cource.
 
-### It would be much better to take a look at the html file
+### It would be much better to take a look at the [html file](https://raw.githubusercontent.com/STAT545-UBC-students/hw06-ziqiangt/master/hw06.html) with this [online viewer](https://jsonformatter.org/html-viewer)
 
 #### Here is the directory of my homework
 
